@@ -34,4 +34,23 @@ public class AudioFile {
             ;
         }
     }
+
+    public void async_play()
+    {
+        try {
+            if (has_played_before) {
+                mp.stop();
+            }
+            mp.prepare();
+            mp.start();
+            has_played_before = true;
+        } catch (Exception e) {
+            ;
+        }
+    }
+
+    public boolean isPlaying()
+    {
+        return mp.isPlaying();
+    }
 }
