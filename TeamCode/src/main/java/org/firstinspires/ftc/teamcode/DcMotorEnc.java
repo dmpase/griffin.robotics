@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 /**
- * Created by Doug on 11/24/2017.
+ * Created by Doug Pase on 11/24/2017.
  */
 
 import com.qualcomm.robotcore.hardware.DcMotor;

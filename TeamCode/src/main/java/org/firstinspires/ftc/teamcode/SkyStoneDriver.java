@@ -1,32 +1,3 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -42,7 +13,10 @@ public abstract class SkyStoneDriver extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
 
     SkyStoneMotors motors = null;
-    SkyStoneArms arms = null;
+    SkyStoneArms   arms   = null;
+
+    double lift_high_power_limit = 0.30;    // test value
+    double lift_low_power_limit  = 0.075;   // test value
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -54,6 +28,14 @@ public abstract class SkyStoneDriver extends OpMode
 
         motors.init();
         arms.init(false);
+
+        if (DeviceFinder.exists(this,"OwO")) {
+            lift_high_power_limit = 0.30;
+        } else if (DeviceFinder.exists(this,"UwU")) {
+            lift_high_power_limit = 0.07;
+        } else {
+            lift_high_power_limit = 0.15;
+        }
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "SkyStoneDriver Initialization Complete.");
@@ -80,6 +62,8 @@ public abstract class SkyStoneDriver extends OpMode
     @Override
     public void loop() {
         // get the throttle command from the driver by reading the gamepad
+        // right (slow) takes priority over dpad (precise) or left (fast),
+        // dpad takes priority over left.
         double fast_x =   gamepad1.left_stick_x;
         double fast_y = - gamepad1.left_stick_y;
 
@@ -140,19 +124,19 @@ public abstract class SkyStoneDriver extends OpMode
         // send the driver commands to the motors
         motors.move(bearing, speed, turn);
 
-
+        // open or close the claw
         if (gamepad2.a && gamepad2.b) {
-            ; //nothing
+            ;                          // do nothing
         } else if (gamepad2.a){
-            arms.grab(false); //open
+            arms.grab(false);   // open
         } else if (gamepad2.b) {
-            arms.grab(true); //close
+            arms.grab(true);    // close
         } else {
-            ; //nothing
+            ;                          // do nothing
         }
 
-        double lift_high_power_limit = 0.30;    //test value
-        double lift_low_power_limit  = 0.075;   //test value
+        // raise or lower the arm
+        telemetry.addData("lift power", "= "+lift_high_power_limit);
         if (gamepad2.right_trigger > 0 && gamepad2.left_trigger > 0) {
             arms.lift(0);
         } else if (gamepad2.right_trigger > 0) {
@@ -169,34 +153,16 @@ public abstract class SkyStoneDriver extends OpMode
             arms.lift(0);
         }
 
-        /*
-        int lift_factor = -10;
-        if (gamepad1.a) {
-            arms.lift_to(lift_factor * 0);
-            telemetry.addData("arm", ""+(lift_factor*0));
-        } else if (gamepad1.x) {
-            arms.lift_to(lift_factor * 1);
-            telemetry.addData("arm", ""+(lift_factor*1));
-        } else if (gamepad1.y) {
-            arms.lift_to(lift_factor * 2);
-            telemetry.addData("arm", ""+(lift_factor*2));
-        } else if (gamepad1.b) {
-            arms.lift_to(lift_factor * 3);
-            telemetry.addData("arm", ""+(lift_factor*3));
-        }
-        */
-
-
+        // open or close the hook
         if (gamepad2.x && gamepad2.y) {
-            arms.hook(SkyStoneArms.Hook.open);
+            arms.hook(SkyStoneArms.Hook.open);  // open
         } else if (gamepad2.y) {
-            arms.hook(SkyStoneArms.Hook.open);
+            arms.hook(SkyStoneArms.Hook.open);  // open
         } else if (gamepad2.x) {
-            arms.hook(SkyStoneArms.Hook.hooked);
+            arms.hook(SkyStoneArms.Hook.hooked);// close
         } else {
-            arms.hook(SkyStoneArms.Hook.open);
+            arms.hook(SkyStoneArms.Hook.open);  // open
         }
-
     }
 
     /*
