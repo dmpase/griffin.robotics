@@ -29,72 +29,62 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+/**
+ * This file contains ...
+ */
 
-@Autonomous(name="Autonomous Template Iterative", group="Autonomous")
-// @Disabled
-public class Autonomous_Iterative extends OpMode {
+public abstract class GriffinClaw {
+    // hardware map and telemetry from the OpMode class
+    public OpMode op_mode = null;
+    public HardwareMap hardwareMap = null;
+    public ElapsedTime runtime = new ElapsedTime();
 
-    private ElapsedTime runtime = new ElapsedTime();
-
-
-    /*
-     * Code to run ONCE when the driver hits INIT
-     */
-    @Override
-    public void init() {
-        telemetry.addData("Status", "Starting Initialization.");
-
-        // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Status", "Initialization Complete.");
+    public GriffinClaw(OpMode op)
+    {
+        op_mode = op;
+        hardwareMap = op_mode.hardwareMap;
     }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
-    @Override
-    public void init_loop() {
-    }
 
-    /*
-     * Code to run ONCE when the driver hits PLAY
-     */
-    @Override
-    public void start() {
-        runtime.reset();
-    }
+    // initialize the claw
+    public abstract void init();
 
-    /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
-     */
-    @Override
-    public void loop() {
-        // Step through each leg of the path,
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-    }
+    // initialize claw motors
+    public static final double CLAW_MIN_HEIGHT = 0.0;
+    public static final double CLAW_MAX_HEIGHT = 1.0;
+    public abstract void open();
+    public abstract void close();
+    public abstract void raise(double height);
+    public abstract void sync();
 
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
+    // stop the claw
+    public abstract void stop();
+
+    // take a quick snooze, catch 40 winks, etc...
+    public static void sleep(double sec)
+    {
+        long ms = (long)(sec * 1000);
+        try {
+            Thread.sleep(ms);
+        } catch (Exception e) {
+            ;
+        }
     }
 }
