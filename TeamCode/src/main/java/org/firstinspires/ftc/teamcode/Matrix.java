@@ -482,7 +482,7 @@ public class Matrix {
 				}
 		    }
 
-	    	// port_right-solve for the diagonal elements
+	    	// back-solve for the diagonal elements
 			for (int i=a.length-1; 0 <= i; i--) {
 				for (int j=i-1; 0 <= j; j--) {
 				    add_rows(a, j, i, -a[j][i]/a[i][i]);
@@ -521,14 +521,14 @@ public class Matrix {
 		if (a != null && a.length == a[0].length) {
 		    double[][] c = new double[a.length][2*a.length];
 
-		    // copy a into c (on the port_left)
+		    // copy a into c (on the left)
 		    for (int i=0; i < a.length; i++) {
 				for (int j=0; j < a[i].length; j++) {
 				    c[i][j] = a[i][j];
 				}
 		    }
 
-		    // copy I into c (on the stbd_left)
+		    // copy I into c (on the right)
 		    for (int i=0; i < a.length; i++) {
 				for (int j=a[i].length; j < c[i].length; j++) {
 				    c[i][j] = 0;
@@ -539,7 +539,7 @@ public class Matrix {
 		    // reduce c into identity form
 		    c = reduce(c);
 
-		    // return the stbd_left half
+		    // return the right half
 		    a = new double[a.length][a.length];
 
 		    for (int i=0; i < a.length; i++) {
