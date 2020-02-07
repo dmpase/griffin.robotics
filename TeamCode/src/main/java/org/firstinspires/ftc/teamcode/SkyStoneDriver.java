@@ -17,6 +17,12 @@ public abstract class SkyStoneDriver extends OpMode
 
     double lift_high_power_limit = 0.30;    // test value
     double lift_low_power_limit  = 0.075;   // test value
+    double fast_throttle         = 1.00;
+    double medium_throttle       = 0.35;
+    double slow_throttle         = 0.20;
+
+    double fast_turn             = 0.75;
+    double slow_turn             = 0.25;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -32,7 +38,7 @@ public abstract class SkyStoneDriver extends OpMode
         if (DeviceFinder.exists(this,"OwO")) {
             lift_high_power_limit = 0.30;
         } else if (DeviceFinder.exists(this,"UwU")) {
-            lift_high_power_limit = 0.07;
+            lift_high_power_limit = 0.10;
         } else {
             lift_high_power_limit = 0.15;
         }
@@ -64,11 +70,11 @@ public abstract class SkyStoneDriver extends OpMode
         // get the throttle command from the driver by reading the gamepad
         // right (slow) takes priority over dpad (precise) or left (fast),
         // dpad takes priority over left.
-        double fast_x =   gamepad1.left_stick_x;
-        double fast_y = - gamepad1.left_stick_y;
+        double fast_x =   fast_throttle * gamepad1.left_stick_x;
+        double fast_y = -fast_throttle * gamepad1.left_stick_y;
 
-        double slow_x = 0.35 * gamepad1.right_stick_x;
-        double slow_y = 0.35 * -gamepad1.right_stick_y;
+        double slow_x = medium_throttle * gamepad1.right_stick_x;
+        double slow_y = medium_throttle * -gamepad1.right_stick_y;
 
         double x = fast_x;
         double y = fast_y;
@@ -76,17 +82,17 @@ public abstract class SkyStoneDriver extends OpMode
             x = slow_x;
             y = slow_y;
         } else if (gamepad1.dpad_left) {
-            x = -0.20;
+            x = - slow_throttle;
             y = 0;
         } else if (gamepad1.dpad_right) {
-            x = 0.20;
+            x = slow_throttle;
             y = 0;
         } else if (gamepad1.dpad_up) {
             x = 0;
-            y = 0.20;
+            y = slow_throttle;
         } else if (gamepad1.dpad_down) {
             x = 0;
-            y = -0.20;
+            y = - slow_throttle;
         }
 
         // convert the command to a bearing relative to the robot
@@ -109,15 +115,15 @@ public abstract class SkyStoneDriver extends OpMode
             ;           // do nothing
         } else if (left) {
             if (gamepad1.left_bumper) {
-                turn = 0.25;
+                turn = slow_turn;
             } else {
-                turn = 0.75 * gamepad1.left_trigger;
+                turn = fast_turn * gamepad1.left_trigger;
             }
         } else if (right) {
             if (gamepad1.right_bumper) {
-                turn = - 0.25;
+                turn = - slow_turn;
             } else {
-                turn = - 0.75 * gamepad1.right_trigger;
+                turn = - fast_turn * gamepad1.right_trigger;
             }
         }
 

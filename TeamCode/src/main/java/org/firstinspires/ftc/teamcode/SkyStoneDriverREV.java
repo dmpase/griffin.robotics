@@ -18,13 +18,17 @@ public class SkyStoneDriverREV extends SkyStoneDriver
     public void init() {
         telemetry.addData("Status", "Starting Initialization.");
 
-        motors = new SkyStoneHolonomic(this, 120, 6000.0/360.0, 5);
+        if (DeviceFinder.exists(this, "OwO")) {
+            motors = new SkyStoneHolonomic(this, 120, 6000.0 / 360.0, 5);
+        } else if (DeviceFinder.exists(this, "UwU")) {
+            motors = new SkyStoneHolonomic(this, 120, 6000.0 / 360.0, 5);
+        } else {
+            motors = new SkyStoneHolonomic(this, 120, 6000.0 / 360.0, 5);
+        }
         motors.init();
 
         arms = new SkyStoneArmREV(this);
         arms.init(false);
-
-
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialization Complete.");

@@ -6,12 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name="Blue Loading Zone", group ="Nex+Gen Griffins"  )
 // @Disabled
-public class SkyAutoBlueLoad extends LinearOpMode {
-
-    private SkyStoneVuforia camera  = null;
-    private SkyStoneArms    arms    = null;
-    private SkyStoneMotors  motors  = null;
-    private SkyStoneSensors sensors = null;
+public class SkyAutoBlueLoad extends GriffinLinearRobot {
 
     private static final double power           = 0.75;
     private static final double foundation_bump = 0.35;
@@ -37,8 +32,6 @@ public class SkyAutoBlueLoad extends LinearOpMode {
 
     private double distance = 0;
     private double bearing  = 0;
-
-    private boolean fail = true;
 
     @Override
     public void runOpMode()
@@ -110,9 +103,10 @@ public class SkyAutoBlueLoad extends LinearOpMode {
         telemetry.addData("runOpMode ", "backup d=%g, b=%g", distance, bearing); telemetry.update();
         motors.move_to(bearing, power/2, distance);
 
+        bearing  = 225;
         if (! opModeIsActive()) { shutdown(); return; }
         telemetry.addData("runOpMode", "turn foundation"); telemetry.update();
-        motors.turn_to(225, foundation_turn_power);
+        motors.turn_to(bearing, foundation_turn_power);
 
         distance = 30;
         bearing  = 0;
@@ -145,86 +139,5 @@ public class SkyAutoBlueLoad extends LinearOpMode {
 
         telemetry.addData("runOpMode", "shut down"); telemetry.update();
         shutdown();
-    }
-
-    public void initialize_robot(boolean camera)
-    {
-        telemetry.addData("initialize_robot", "start initialization");
-        telemetry.update();
-
-        if (camera) {
-            telemetry.addData("initialize_robot", "create camera");
-            telemetry.update();
-
-            this.camera = new SkyStoneVuforia(this, SkyStoneVuforia.FRONT_CAMERA);
-            telemetry.addData("initialize_robot", "camera created");
-            telemetry.update();
-
-            this.camera.init();
-            telemetry.addData("initialize_robot", "camera initalized");
-            telemetry.update();
-
-            this.camera.activate();
-            telemetry.addData("initialize_robot", "camera activated");
-            telemetry.update();
-        }
-
-        telemetry.addData("initialize_robot","create motors");
-        telemetry.update();
-        motors = new SkyStoneHolonomic(this, 100, 4800.0/360.0, 0);
-        motors.init();
-
-        telemetry.addData("initialize_robot","create arm");
-        telemetry.update();
-        arms = new SkyStoneArmREV(this);
-        arms.init(true);
-        arms.hook(SkyStoneArms.Hook.open);
-
-        telemetry.addData("initialize_robot","create sensors");
-        telemetry.update();
-        // boot up the sensors
-//        sensors = new SkyStoneUltraRev(this);
-//        sensors.init();
-
-        telemetry.addData("initialize_robot", "done initializing");
-        telemetry.update();
-    }
-
-    public void shutdown()
-    {
-        if (camera != null) {
-            telemetry.addData("shutdown", "deactivate camera");
-            telemetry.update();
-            camera.deactivate();
-            telemetry.addData("shutdown", "camera deactivated");
-            telemetry.update();
-        }
-
-        if (motors != null) {
-            telemetry.addData("shutdown", "stop motors");
-            telemetry.update();
-            motors.stop();
-            telemetry.addData("shutdown", "motors stopped");
-            telemetry.update();
-        }
-
-        if (arms != null) {
-            telemetry.addData("shutdown", "stop arms");
-            telemetry.update();
-            arms.stop();
-            telemetry.addData("shutdown", "arms stopped");
-            telemetry.update();
-        }
-
-        if (sensors != null) {
-            telemetry.addData("shutdown", "stop sensors");
-            telemetry.update();
-            sensors.stop();
-            telemetry.addData("shutdown", "sensors stopped");
-            telemetry.update();
-        }
-
-        telemetry.addData("shutdown", "robot is shutdown");
-        telemetry.update();
     }
 }
