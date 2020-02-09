@@ -7,6 +7,18 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 //@Disabled
 public class SkyAutoBlueBuild extends GriffinLinearRobot {
 
+    public static final double power = 0.33;
+
+    Object[][] owo_instructions = {
+            {SLEEP, 20000,            "wait patiently"},
+            {MOVE,     90, power, 12, "move to port"},
+    };
+
+    Object[][] uwu_instructions = {
+            {SLEEP, 20000,            "wait patiently"},
+            {MOVE,     90, power, 12, "move to port"},
+    };
+
     @Override
     public void runOpMode()
     {
@@ -14,7 +26,23 @@ public class SkyAutoBlueBuild extends GriffinLinearRobot {
         initialize_robot(false);
         telemetry.addData("runOpMode", "initialization complete"); telemetry.update();
 
+        Object[][] instructions = null;
+
+        if (exists("OwO")) {
+            instructions = owo_instructions;
+        } else if (exists("UwU")) {
+            instructions = uwu_instructions;
+        } else {
+            instructions = owo_instructions;
+        }
+
         waitForStart();
+
+        if (instructions != null) {
+            execute_loop(instructions);
+            shutdown();
+            return;
+        }
 
         sleep(20000);
 

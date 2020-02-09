@@ -34,9 +34,9 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
         telemetry.addData("initialize_robot","creating motors");
         telemetry.update();
         if (exists("OwO")) {
-            motors = new SkyStoneHolonomic(this, 120, 6000.0/360.0, 5);
+            motors = new SkyStoneHolonomic(this, 100, 6000.0/360.0, 5);
         } else if (exists("UwU")) {
-            motors = new SkyStoneHolonomic(this, 120, 6000.0/360.0, 5);
+            motors = new SkyStoneHolonomic(this, 128, 6375.0/360.0, 5);
         } else {
             motors = new SkyStoneHolonomic(this, 120, 6000.0/360.0, 5);
         }
@@ -56,6 +56,97 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
 
         telemetry.addData("initialize_robot", "done initializing");
         telemetry.update();
+    }
+
+    // instruction components
+    public static final int OP_CODE    = 0;
+    public static final int CLOSE      = 1;    // claw & hook, close or grab
+    public static final int TIME       = 1;    // sleep time in ms
+    public static final int BEARING    = 1;    // bearing in degrees
+    public static final int POWER      = 2;    // power, -1 to +1
+    public static final int RANGE      = 3;    // range in inches
+    public static final int GRAB_MSG   = 2;    // message to player
+    public static final int HOOK_MSG   = 2;    // message to player
+    public static final int MOVE_MSG   = 4;    // message to player
+    public static final int TURN_MSG   = 3;    // message to player
+    public static final int SLEEP_MSG  = 2;    // message to player
+
+    // op codes
+    public static final int GRAB  = 1;
+    public static final int HOOK  = 2;
+    public static final int MOVE  = 3;
+    public static final int TURN  = 4;
+    public static final int SLEEP = 5;
+
+    public void execute_loop(Object[][] instructions)
+    {
+        if (instructions == null || ! opModeIsActive()) {
+            // something is coded incorrectly
+            shutdown();
+            return;
+        }
+
+        try {
+            for (int i=0; i < instructions.length; i++) {
+                Object[] instruction = instructions[i];
+
+                if (instruction == null || ! opModeIsActive()) {
+                    // player hit the stop button
+                    shutdown();
+                    return;
+                }
+
+                int op_code = (int) instruction[OP_CODE];
+
+                if (op_code == GRAB) {
+                    // execute a grab operation
+                    boolean grab = (boolean) instruction[CLOSE];
+                    String message = (String) instruction[GRAB_MSG];
+                    telemetry.addData("execute loop", message);
+                    telemetry.update();
+                    arms.grab(grab);
+                } else if (op_code == HOOK) {
+                    // execute a hook operation
+                    boolean close = (boolean) instruction[CLOSE];
+                    String message = (String) instruction[HOOK_MSG];
+                    telemetry.addData("execute loop", message);
+                    telemetry.update();
+                    if (close) {
+                        arms.hook(SkyStoneArms.Hook.hooked);
+                    } else {
+                        arms.hook(SkyStoneArms.Hook.open);
+                    }
+                } else if (op_code == MOVE) {
+                    // execute a move operation
+                    double bearing = (double) instruction[BEARING];
+                    double range   = (double) instruction[RANGE];
+                    double power   = (double) instruction[POWER];
+                    String message = (String) instruction[MOVE_MSG];
+                    telemetry.addData("execute loop", message);
+                    telemetry.update();
+                    motors.move_to(bearing, range, power);
+                } else if (op_code == TURN) {
+                    // execute a turn operation
+                    double bearing = (double) instruction[BEARING];
+                    double power   = (double) instruction[POWER];
+                    String message = (String) instruction[TURN_MSG];
+                    telemetry.addData("execute loop", message);
+                    telemetry.update();
+                    motors.turn_to(bearing, power);
+                } else if (op_code == SLEEP) {
+                    // execute a sleep operation
+                    long sleep_time = (long) instruction[TIME];
+                    String message = (String) instruction[SLEEP_MSG];
+                    telemetry.addData("execute loop", message);
+                    telemetry.update();
+                    sleep(sleep_time);
+                }
+            }
+        } catch (Exception e) {
+            // something is coded incorrectly
+            shutdown();
+            return;
+        }
     }
 
     public void shutdown()

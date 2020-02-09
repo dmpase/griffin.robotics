@@ -44,7 +44,7 @@ public class SkyStoneArmREV extends SkyStoneArms {
 
 
     private static final double HOOK_OPEN   = 0.0;
-    private static final double HOOK_CLOSED = 0.5;
+    private static final double HOOK_CLOSED = 0.6;
     private static final double HOOK_STORED = HOOK_OPEN;
     @Override
     public void hook(Hook position) {
