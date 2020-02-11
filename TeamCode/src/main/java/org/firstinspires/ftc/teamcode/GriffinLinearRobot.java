@@ -101,16 +101,20 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
                 if (op_code == GRAB) {
                     // execute a grab operation
                     boolean grab = (boolean) instruction[CLOSE];
-                    String message = (String) instruction[GRAB_MSG];
-                    telemetry.addData("execute loop", message);
-                    telemetry.update();
+                    if (MOVE_MSG < instruction.length) {
+                        String message = (String) instruction[GRAB_MSG];
+                        telemetry.addData("execute loop", message);
+                        telemetry.update();
+                    }
                     arms.grab(grab);
                 } else if (op_code == HOOK) {
                     // execute a hook operation
                     boolean close = (boolean) instruction[CLOSE];
-                    String message = (String) instruction[HOOK_MSG];
-                    telemetry.addData("execute loop", message);
-                    telemetry.update();
+                    if (HOOK_MSG < instruction.length) {
+                        String message = (String) instruction[HOOK_MSG];
+                        telemetry.addData("execute loop", message);
+                        telemetry.update();
+                    }
                     if (close) {
                         arms.hook(SkyStoneArms.Hook.hooked);
                     } else {
@@ -121,24 +125,30 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
                     double bearing = (double) instruction[BEARING];
                     double range   = (double) instruction[RANGE];
                     double power   = (double) instruction[POWER];
-                    String message = (String) instruction[MOVE_MSG];
-                    telemetry.addData("execute loop", message);
-                    telemetry.update();
+                    if (MOVE_MSG < instruction.length) {
+                        String message = (String) instruction[MOVE_MSG];
+                        telemetry.addData("execute loop", message);
+                        telemetry.update();
+                    }
                     motors.move_to(bearing, range, power);
                 } else if (op_code == TURN) {
                     // execute a turn operation
                     double bearing = (double) instruction[BEARING];
                     double power   = (double) instruction[POWER];
-                    String message = (String) instruction[TURN_MSG];
-                    telemetry.addData("execute loop", message);
-                    telemetry.update();
+                    if (TURN_MSG < instruction.length) {
+                        String message = (String) instruction[TURN_MSG];
+                        telemetry.addData("execute loop", message);
+                        telemetry.update();
+                    }
                     motors.turn_to(bearing, power);
                 } else if (op_code == SLEEP) {
                     // execute a sleep operation
                     long sleep_time = (long) instruction[TIME];
-                    String message = (String) instruction[SLEEP_MSG];
-                    telemetry.addData("execute loop", message);
-                    telemetry.update();
+                    if (SLEEP_MSG < instruction.length) {
+                        String message = (String) instruction[SLEEP_MSG];
+                        telemetry.addData("execute loop", message);
+                        telemetry.update();
+                    }
                     sleep(sleep_time);
                 }
             }
