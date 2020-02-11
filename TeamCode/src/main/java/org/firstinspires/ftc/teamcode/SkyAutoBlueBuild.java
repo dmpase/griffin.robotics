@@ -22,7 +22,7 @@ public class SkyAutoBlueBuild extends GriffinLinearRobot {
 
         sleep(20000);
 
-        telemetry.addData("runOpMode: ", "moving 12\" to port"); telemetry.update();
+        telemetry.addData("runOpMode: ", "moving 12\" to starboard"); telemetry.update();
 
         motors.move_to(90, 0.33, 12);
 

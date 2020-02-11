@@ -11,12 +11,12 @@ public class SkyAutoBlueBuildGRL extends GriffinLinearRobot {
 
     Object[][] owo_instructions = {
             {SLEEP, 20000,            "sleeping 20 seconds"},
-            {MOVE,     90, power, 12, "moving 12\" to port"},
+            {MOVE,     90, power, 12, "moving 12\" to starboard"},
     };
 
     Object[][] uwu_instructions = {
             {SLEEP, 20000,            "sleeping 20 seconds"},
-            {MOVE,     90, power, 12, "moving 12\" to port"},
+            {MOVE,     90, power, 12, "moving 12\" to starboard"},
     };
 
     @Override

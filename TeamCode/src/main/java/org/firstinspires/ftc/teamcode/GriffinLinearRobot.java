@@ -155,7 +155,6 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
         } catch (Exception e) {
             // something is coded incorrectly
             shutdown();
-            return;
         }
     }
 
