@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
 @Autonomous(name="Red Loading Zone", group ="Nex+Gen Griffins"  )
-// @Disabled
+@Disabled
 public class SkyAutoRedLoad extends GriffinLinearRobot {
 
     private static final double power           = 0.75;

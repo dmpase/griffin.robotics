@@ -9,7 +9,7 @@ public class SkyStoneArmREV extends SkyStoneArms {
     private Servo hook       =null;
     private Servo grab       =null;
 
-    boolean drivemode = true; // true means autonomous
+//    boolean drivemode = true; // true means autonomous
 
     protected SkyStoneArmREV(OpMode op) {
         super(op);
@@ -22,7 +22,7 @@ public class SkyStoneArmREV extends SkyStoneArms {
     // initialize the motors
     public void init(boolean autonomous)
     {
-        drivemode = autonomous;
+//        drivemode = autonomous;
         hook  = op_mode.hardwareMap.get(Servo.class, HOOK);
         if (hook != null) {
             hook.setDirection(Servo.Direction.FORWARD);
@@ -43,9 +43,9 @@ public class SkyStoneArmREV extends SkyStoneArms {
     }
 
 
-    private static final double HOOK_OPEN   = 0.0;
-    private static final double HOOK_CLOSED = 0.6;
-    private static final double HOOK_STORED = HOOK_OPEN;
+    private static double HOOK_OPEN   = 0.0;
+    private static double HOOK_CLOSED = 0.65;
+    private static double HOOK_STORED = HOOK_OPEN;
     @Override
     public void hook(Hook position) {
         if (hook != null) {

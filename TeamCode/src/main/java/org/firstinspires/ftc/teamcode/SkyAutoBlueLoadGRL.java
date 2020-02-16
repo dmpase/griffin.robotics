@@ -8,10 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
 
     private static final double power           = 0.75;
-    private static final double foundation_bump = 0.35;
-    private static final double foundation_turn_power = 0.35;
-    private static final double back_distance   = 12;
-    private static final double leeway          = 0;
+    private static final double owo_turn_power  = 0.40;
+    private static final double uwu_turn_power  = 0.30;
     private static final long   sleep_delay     = 750;
 
     private static final boolean use_arm     = true;
@@ -29,51 +27,52 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
     private static final double foundation_space    = 4;        // distance from foundation to building zone wall
     private static final double foundation_alliance = 47.25;    // distance from foundation to alliance wall
 
-    private double distance = 0;
-    private double bearing  = 0;
 
     Object[][] owo_instructions = {
-            {GRAB,  false,                               "open claw"},
-            {HOOK,  false,                               "open hook"},
-            {MOVE,  0,      power, 48 - robot_depth + 2, "move to stones"},
-            {GRAB,  true,                                "grab a block"},
-            {SLEEP, sleep_delay,                         "sleep for claw"},
-            {MOVE,  180,    power,                   12, "back away from stones"},
-            {MOVE,  -(90+leeway), power,             42, "move to bridge"},
-            {GRAB,  false,                               "drop stone"},
-            {TURN,   15,    foundation_turn_power,       "reorient robot"},
-            {MOVE, -(90-leeway), power, 30+robot_width*3/4, "move to foundation"},
-            {MOVE,    0,    power,                   12, "move forward"},
-            {HOOK,  true,                                "close hook"},
-            {SLEEP, sleep_delay,                         "sleep for hook"},
-            {MOVE,  180,    power,                   12, "pull the foundation back"},
-            {TURN,  225,    foundation_turn_power,       "turn the foundation"},
-            {GRAB,  false,                               "open claw"},
-            {MOVE,    0,    power,                   30, "push the foundation"},
-            {MOVE,  180,    power,                    6, "back away from foundation"},
-            {MOVE,  -90,    power,                   54, "move to bridge"},
+            {GRAB, false,                        "open claw"},
+            {HOOK, false,                        "open hook"},
+            {MOVE,     0,   power,           34, "move to stones"},
+            {GRAB,  true,                        "grab a stone"},
+            {SLEEP, sleep_delay,                 "sleep for claw"},
+            {MOVE,   180,    power,          14, "back away from stones"},
+            {TURN,     0,    power,              "fix the drift."},
+            {MOVE,   -90,    power,          42, "move to bridge"},
+            {GRAB, false,                        "drop stone"},
+            {MOVE,   -85,    power,          48, "center the hook on the foundation"},
+            {MOVE,     0,    power,          15, "move to the foundation"},
+            {HOOK,  true,                        "close hook"},
+            {SLEEP, sleep_delay,                 "sleep for hook"},
+            {MOVE,   180,    power,          12, "pull foundation back"},
+            {TURN,   225,    owo_turn_power,     "turn the foundation"},
+            {HOOK, false,                        "open hook"},
+            {MOVE,     0,    power,          36, "push the foundation"},
+            {MOVE,   180,    power,           8, "back away from foundation"},
+            {TURN,   -10,    power,              "correct retreat angle"},
+            {MOVE,   -90,    power,          54, "move to bridge"},
     };
 
     Object[][] uwu_instructions = {
-            {GRAB,  false,                               "open claw"},
-            {HOOK,  false,                               "open hook"},
-            {MOVE,  0,      power, 48 - robot_depth + 2, "move to stones"},
-            {GRAB,  true,                                "grab a block"},
-            {SLEEP, sleep_delay,                         "sleep for claw"},
-            {MOVE,  180,    power,                   12, "back away from stones"},
-            {MOVE,  -(90+leeway), power,             42, "move to bridge"},
-            {GRAB,  false,                               "drop stone"},
-            {TURN,   15,    foundation_turn_power,       "reorient robot"},
-            {MOVE, -(90-leeway), power, 30+robot_width*3/4, "move to foundation"},
-            {MOVE,    0,    power,                   12, "move forward"},
-            {HOOK,  true,                                "close hook"},
-            {SLEEP, sleep_delay,                         "sleep for hook"},
-            {MOVE,  180,    power,                   12, "pull the foundation back"},
-            {TURN,  225,    foundation_turn_power,       "turn the foundation"},
-            {GRAB,  false,                               "open claw"},
-            {MOVE,    0,    power,                   30, "push the foundation"},
-            {MOVE,  180,    power,                    6, "back away from foundation"},
-            {MOVE,  -90,    power,                   54, "move to bridge"},
+            {GRAB, false,                        "open claw"},
+            {HOOK, false,                        "open hook"},
+            {MOVE,     0,   power,           32, "move to stones"},
+            {GRAB,  true,                        "grab a stone"},
+            {SLEEP, sleep_delay,                 "sleep for claw"},
+            {MOVE,   180,    power,          14, "back away from stones"},
+            {TURN,     5,    power,              "fix the drift."},
+            {MOVE,   -90,    power,          42, "move to bridge"},
+            {GRAB, false,                        "drop stone"},
+            {TURN,     5,    power,              "turn compensation"},
+            {MOVE,   -85,    power,          48, "center the hook on the foundation"},
+            {MOVE,     0,    0.50,           12, "move to the foundation"},
+            {HOOK,  true,                        "close hook"},
+            {SLEEP, sleep_delay,                 "sleep for hook"},
+            {MOVE,   180,    0.50,           12, "pull foundation back"},
+            {TURN,   225, uwu_turn_power,        "turn the foundation"},
+            {HOOK, false,                        "open hook"},
+            {MOVE,     0,    power,          36, "push the foundation"},
+            {MOVE,   180,    power,           8, "back away from foundation"},
+            {TURN,     0,    power,              "correct retreat angle"},
+            {MOVE,   -90,    power,          54, "move to bridge"},
     };
 
     @Override

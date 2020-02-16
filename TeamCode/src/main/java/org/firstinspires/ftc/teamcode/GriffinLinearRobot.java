@@ -11,6 +11,7 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
     protected SkyStoneMotors  motors  = null;
     protected SkyStoneSensors sensors = null;
 
+    protected String robot = "Unknown";
 
     public void initialize_robot(boolean use_camera)
     {
@@ -34,11 +35,13 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
         telemetry.addData("initialize_robot","creating motors");
         telemetry.update();
         if (exists("OwO")) {
-            motors = new SkyStoneHolonomic(this, 100, 6000.0/360.0, 5);
+            robot = "OwO";
+            motors = new SkyStoneHolonomic(this, 100.84, 4975.0/360.0, 1);
         } else if (exists("UwU")) {
-            motors = new SkyStoneHolonomic(this, 128, 6375.0/360.0, 5);
+            robot = "UwU";
+            motors = new SkyStoneHolonomic(this, 131.3, 6200.0/360.0, 0);
         } else {
-            motors = new SkyStoneHolonomic(this, 120, 6000.0/360.0, 5);
+            motors = new SkyStoneHolonomic(this, 100.84, 4975.0/360.0, 1);
         }
         motors.init();
 
@@ -54,7 +57,7 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
         sensors = new SkyStoneUltraRev(this);
         sensors.init();
 
-        telemetry.addData("initialize_robot", "done initializing");
+        telemetry.addData("initialize_robot", "done initializing " + robot);
         telemetry.update();
     }
 
@@ -82,6 +85,9 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
     {
         if (instructions == null || ! opModeIsActive()) {
             // something is coded incorrectly
+            telemetry.addData("execute loop", "Emergency exit! (1)");
+            telemetry.update();
+            sleep(20000);
             shutdown();
             return;
         }
@@ -92,6 +98,9 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
 
                 if (instruction == null || ! opModeIsActive()) {
                     // player hit the stop button
+                    telemetry.addData("execute loop", "Emergency exit! (2)");
+                    telemetry.update();
+                    sleep(20000);
                     shutdown();
                     return;
                 }
@@ -122,19 +131,20 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
                     }
                 } else if (op_code == MOVE) {
                     // execute a move operation
-                    double bearing = (double) instruction[BEARING];
-                    double range   = (double) instruction[RANGE];
-                    double power   = (double) instruction[POWER];
+                    double bearing = to_double(instruction[BEARING]);
+                    double power   = to_double(instruction[POWER]);
+                    double range   = to_double(instruction[RANGE]);
                     if (MOVE_MSG < instruction.length) {
                         String message = (String) instruction[MOVE_MSG];
                         telemetry.addData("execute loop", message);
+                        telemetry.addData("execute loop", "b=%5.2f p=%5.2f r=%5.2f", bearing, power, range);
                         telemetry.update();
                     }
-                    motors.move_to(bearing, range, power);
+                    motors.move_to(bearing, power, range);
                 } else if (op_code == TURN) {
                     // execute a turn operation
-                    double bearing = (double) instruction[BEARING];
-                    double power   = (double) instruction[POWER];
+                    double bearing = to_double(instruction[BEARING]);
+                    double power   = to_double(instruction[POWER]);
                     if (TURN_MSG < instruction.length) {
                         String message = (String) instruction[TURN_MSG];
                         telemetry.addData("execute loop", message);
@@ -143,7 +153,7 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
                     motors.turn_to(bearing, power);
                 } else if (op_code == SLEEP) {
                     // execute a sleep operation
-                    long sleep_time = (long) instruction[TIME];
+                    long sleep_time = to_long(instruction[TIME]);
                     if (SLEEP_MSG < instruction.length) {
                         String message = (String) instruction[SLEEP_MSG];
                         telemetry.addData("execute loop", message);
@@ -154,8 +164,90 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
             }
         } catch (Exception e) {
             // something is coded incorrectly
+            telemetry.addData("execute loop", "Emergency exit! (3)");
+            telemetry.addData("execute loop", e);
+            telemetry.update();
+            sleep(20000);
             shutdown();
         }
+    }
+
+    public double to_double(Object obj)
+    {
+        double result = 0;
+
+        try {
+            result = (double) (int) obj;
+        } catch(Exception e0) {
+            try {
+                result = (double) obj;
+            } catch(Exception e1) {
+                try {
+                    result = (float) obj;
+                } catch(Exception e2) {
+                    try {
+                        result = (long) obj;
+                    } catch(Exception e3) {
+                        telemetry.addData("to_double", e3);
+                        telemetry.update();
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public double to_int(Object obj)
+    {
+        int result = 0;
+
+        try {
+            result = (int) obj;
+        } catch(Exception e0) {
+            try {
+                result = (int) (double) obj;
+            } catch(Exception e1) {
+                try {
+                    result = (int) (float) obj;
+                } catch(Exception e2) {
+                    try {
+                        result = (int) (long) obj;
+                    } catch(Exception e3) {
+                        telemetry.addData("to_int", e3);
+                        telemetry.update();
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public long to_long(Object obj)
+    {
+        long result = 0;
+
+        try {
+            result = (long) (int) obj;
+        } catch(Exception e0) {
+            try {
+                result = (long) obj;
+            } catch(Exception e1) {
+                try {
+                    result = (long) (float) obj;
+                } catch(Exception e2) {
+                    try {
+                        result = (long) (double) obj;
+                    } catch(Exception e3) {
+                        telemetry.addData("to_long", e3);
+                        telemetry.update();
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     public void shutdown()
