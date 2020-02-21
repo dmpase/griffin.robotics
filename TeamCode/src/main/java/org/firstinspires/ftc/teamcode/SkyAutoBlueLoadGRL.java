@@ -38,8 +38,8 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
             {TURN,     0,    power,              "fix the drift."},
             {MOVE,   -90,    power,          42, "move to bridge"},
             {GRAB, false,                        "drop stone"},
-            {MOVE,   -85,    power,          48, "center the hook on the foundation"},
-            {MOVE,     0,    power,          15, "move to the foundation"},
+            {MOVE,   -85,    power,          48, "move to foundation center"},
+            {MOVE,     0,    power,          24, "move to the foundation"},
             {HOOK,  true,                        "close hook"},
             {SLEEP, sleep_delay,                 "sleep for hook"},
             {MOVE,   180,    power,          12, "pull foundation back"},
@@ -48,7 +48,7 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
             {MOVE,     0,    power,          36, "push the foundation"},
             {MOVE,   180,    power,           8, "back away from foundation"},
             {TURN,   -10,    power,              "correct retreat angle"},
-            {MOVE,   -90,    power,          54, "move to bridge"},
+            {MOVE,   -90,    power,          42, "move to bridge"},
     };
 
     Object[][] uwu_instructions = {
@@ -62,8 +62,8 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
             {MOVE,   -90,    power,          42, "move to bridge"},
             {GRAB, false,                        "drop stone"},
             {TURN,     5,    power,              "turn compensation"},
-            {MOVE,   -85,    power,          48, "center the hook on the foundation"},
-            {MOVE,     0,    0.50,           12, "move to the foundation"},
+            {MOVE,   -85,    power,          54, "center on the foundation"},
+            {MOVE,     0,    0.50,           18, "move to the foundation"},
             {HOOK,  true,                        "close hook"},
             {SLEEP, sleep_delay,                 "sleep for hook"},
             {MOVE,   180,    0.50,           12, "pull foundation back"},

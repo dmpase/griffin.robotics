@@ -25,29 +25,6 @@ public abstract class SkyStoneDriver extends OpMode
     double slow_turn             = 0.25;
 
     /*
-     * Code to run ONCE when the driver hits INIT
-     */
-    @Override
-    public void init() {
-        telemetry.addData("Status", "Starting SkyStoneDriver Initialization.");
-        telemetry.update();
-
-        motors.init();
-        arms.init(false);
-
-        if (DeviceFinder.exists(this,"OwO")) {
-            lift_high_power_limit = 0.30;
-        } else if (DeviceFinder.exists(this,"UwU")) {
-            lift_high_power_limit = 0.10;
-        } else {
-            lift_high_power_limit = 0.15;
-        }
-
-        // Tell the driver that initialization is complete.
-        telemetry.addData("Status", "SkyStoneDriver Initialization Complete.");
-    }
-
-    /*
      * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
      */
     @Override

@@ -8,21 +8,21 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 // @Disabled
 public class SkyStoneDriverREV extends SkyStoneDriver
 {
-    // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
-    /*
-     * Code to run ONCE when the driver hits INIT
-     */
+     // Code to run ONCE when the driver hits INIT
     @Override
     public void init() {
         telemetry.addData("Status", "Starting Initialization.");
 
         if (DeviceFinder.exists(this, "OwO")) {
-            motors = new SkyStoneHolonomic(this, 120, 6000.0 / 360.0, 5);
+            lift_high_power_limit = 0.30;
+            motors = new SkyStoneHolonomic(this, 100.84, 4975.0/360.0, 1);
         } else if (DeviceFinder.exists(this, "UwU")) {
-            motors = new SkyStoneHolonomic(this, 120, 6000.0 / 360.0, 5);
+            lift_high_power_limit = 0.20;
+            motors = new SkyStoneHolonomic(this, 131.3, 6200.0/360.0, 0);
         } else {
+            lift_high_power_limit = 0.15;
             motors = new SkyStoneHolonomic(this, 120, 6000.0 / 360.0, 5);
         }
         motors.init();
