@@ -34,13 +34,17 @@ public class SkyAutoBlueLoad extends GriffinLinearRobot {
     private double distance = 0;
     private double bearing  = 0;
 
+    // this is the main Bloe Loading Zone op mode, now obsolete
+    // it was replaced by SkyAutoBlueLoadGRL
+    // it works by using direct calls to the robot subsystems
     @Override
     public void runOpMode()
     {
         telemetry.addData("runOpMode", "start initialization"); telemetry.update();
-        initialize_robot(false);
+        initialize_robot(false, false);
         telemetry.addData("runOpMode", "initialization complete"); telemetry.update();
 
+        // wait for the player to press play
         waitForStart();
 
         // make sure claw and hook are open, but don't wait for them...

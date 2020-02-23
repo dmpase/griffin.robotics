@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
+// this is the original Red Loading Zone autonomous op mode, now obsolete
+// it uses direct commands to the drive, claw and hook
+// it has been replaced by SkyAutoRedLoadGRL
 @Autonomous(name="Red Loading Zone", group ="Nex+Gen Griffins"  )
 @Disabled
 public class SkyAutoRedLoad extends GriffinLinearRobot {
@@ -33,13 +36,15 @@ public class SkyAutoRedLoad extends GriffinLinearRobot {
     private double bearing  = 0;
 
 
+    // main autonomous op mode
     @Override
     public void runOpMode()
     {
         telemetry.addData("runOpMode", "start initialization"); telemetry.update();
-        initialize_robot(false);
+        initialize_robot(false, false);
         telemetry.addData("runOpMode", "initialization complete"); telemetry.update();
 
+        // wait for the player to press play
         waitForStart();
 
         // make sure claw and hook are open, but don't wait for them...

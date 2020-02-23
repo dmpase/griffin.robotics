@@ -28,6 +28,7 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
     private static final double foundation_alliance = 47.25;    // distance from foundation to alliance wall
 
 
+    // instructions for the OwO robot
     Object[][] owo_instructions = {
             {GRAB, false,                        "open claw"},
             {HOOK, false,                        "open hook"},
@@ -35,22 +36,24 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
             {GRAB,  true,                        "grab a stone"},
             {SLEEP, sleep_delay,                 "sleep for claw"},
             {MOVE,   180,    power,          14, "back away from stones"},
-            {TURN,     0,    power,              "fix the drift."},
-            {MOVE,   -90,    power,          42, "move to bridge"},
+            {MOVE,   -90,    power,          60, "move to bridge"},
+            {MOVE,     0,    power,          10, "move forward"},
             {GRAB, false,                        "drop stone"},
-            {MOVE,   -85,    power,          48, "move to foundation center"},
-            {MOVE,     0,    power,          24, "move to the foundation"},
+            {MOVE,   -90,    power,          36, "move to foundation center"},
+            {MOVE,   180,    power,          18, "move away from the foundation"},
+            {MOVE,     0,    0.45,           36, "move to the foundation"},
             {HOOK,  true,                        "close hook"},
             {SLEEP, sleep_delay,                 "sleep for hook"},
             {MOVE,   180,    power,          12, "pull foundation back"},
-            {TURN,   225,    owo_turn_power,     "turn the foundation"},
+            {TURN,   200,    owo_turn_power,     "turn the foundation"},
             {HOOK, false,                        "open hook"},
-            {MOVE,     0,    power,          36, "push the foundation"},
-            {MOVE,   180,    power,           8, "back away from foundation"},
+            {MOVE,     0,    power,          30, "push the foundation"},
+            {MOVE,   180,    power,           6, "back away from foundation"},
             {TURN,   -10,    power,              "correct retreat angle"},
-            {MOVE,   -90,    power,          42, "move to bridge"},
+            {MOVE,   -90,    power,          50, "move to bridge"},
     };
 
+    // instructions for the UwU robot
     Object[][] uwu_instructions = {
             {GRAB, false,                        "open claw"},
             {HOOK, false,                        "open hook"},
@@ -75,15 +78,18 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
             {MOVE,   -90,    power,          54, "move to bridge"},
     };
 
+    // this is the main Blue Load Zone autonomous op mode
+    // it replaces SkyAutoBlueLoad
     @Override
     public void runOpMode()
     {
         telemetry.addData("runOpMode", "start initialization"); telemetry.update();
-        initialize_robot(false);
+        initialize_robot(false, false);
         telemetry.addData("runOpMode", "initialization complete"); telemetry.update();
 
         Object[][] instructions = null;
 
+        // figure which robot we're using and choose the set of instructions
         if (exists("OwO")) {
             instructions = owo_instructions;
         } else if (exists("UwU")) {
@@ -92,8 +98,10 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
             instructions = owo_instructions;
         }
 
+        // wait for the player to press play
         waitForStart();
 
+        // execute the instructions
         if (instructions != null) {
             execute_loop(instructions);
         }

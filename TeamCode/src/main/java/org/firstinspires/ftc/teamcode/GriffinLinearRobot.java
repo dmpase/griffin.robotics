@@ -13,7 +13,7 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
 
     protected String robot = "Unknown";
 
-    public void initialize_robot(boolean use_camera)
+    public void initialize_robot(boolean use_camera, boolean use_sensors)
     {
         telemetry.addData("initialize_robot", "starting initialization");
         telemetry.update();
@@ -51,18 +51,20 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
         arms.init(true);
         arms.hook(SkyStoneArms.Hook.open);
 
-        telemetry.addData("initialize_robot","creating sensors");
-        telemetry.update();
-        // boot up the sensors
-        sensors = new SkyStoneUltraRev(this);
-        sensors.init();
+        if (use_sensors) {
+            telemetry.addData("initialize_robot", "creating sensors");
+            telemetry.update();
+            // boot up the sensors
+            sensors = new SkyStoneUltraRev(this);
+            sensors.init();
+        }
 
         telemetry.addData("initialize_robot", "done initializing " + robot);
         telemetry.update();
     }
 
-    // instruction components
-    public static final int OP_CODE    = 0;
+    // instruction component indexes
+    public static final int OP_CODE    = 0;    // instruction operation code
     public static final int CLOSE      = 1;    // claw & hook, close or grab
     public static final int TIME       = 1;    // sleep time in ms
     public static final int BEARING    = 1;    // bearing in degrees
@@ -75,11 +77,12 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
     public static final int SLEEP_MSG  = 2;    // message to player
 
     // op codes
-    public static final int GRAB  = 1;
-    public static final int HOOK  = 2;
-    public static final int MOVE  = 3;
-    public static final int TURN  = 4;
-    public static final int SLEEP = 5;
+    public static final int GRAB    = 1;
+    public static final int HOOK    = 2;
+    public static final int MOVE    = 3;
+    public static final int TURN    = 4;
+    public static final int SLEEP   = 5;
+
 
     public void execute_loop(Object[][] instructions)
     {
@@ -100,7 +103,7 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
                     // player hit the stop button
                     telemetry.addData("execute loop", "Emergency exit! (2)");
                     telemetry.update();
-                    sleep(20000);
+                    sleep(5000);
                     shutdown();
                     return;
                 }
@@ -177,48 +180,21 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
         double result = 0;
 
         try {
-            result = (double) (int) obj;
-        } catch(Exception e0) {
-            try {
-                result = (double) obj;
-            } catch(Exception e1) {
-                try {
-                    result = (float) obj;
-                } catch(Exception e2) {
-                    try {
-                        result = (long) obj;
-                    } catch(Exception e3) {
-                        telemetry.addData("to_double", e3);
-                        telemetry.update();
-                    }
-                }
+            if (obj.getClass() == Class.forName("java.lang.Integer")) {
+                result = (double) (int) obj;
+            } else if (obj.getClass() == Class.forName("java.lang.Double")) {
+                result = (double) (double) obj;
+            } else if (obj.getClass() == Class.forName("java.lang.Long")) {
+                result = (double) (long) obj;
+            } else if (obj.getClass() == Class.forName("java.lang.Float")) {
+                result = (double) (float) obj;
             }
-        }
-
-        return result;
-    }
-
-    public double to_int(Object obj)
-    {
-        int result = 0;
-
-        try {
-            result = (int) obj;
-        } catch(Exception e0) {
-            try {
-                result = (int) (double) obj;
-            } catch(Exception e1) {
-                try {
-                    result = (int) (float) obj;
-                } catch(Exception e2) {
-                    try {
-                        result = (int) (long) obj;
-                    } catch(Exception e3) {
-                        telemetry.addData("to_int", e3);
-                        telemetry.update();
-                    }
-                }
-            }
+        } catch (Exception e) {
+            String class_name = obj.getClass().getName();
+            telemetry.addData("to_double", class_name);
+            telemetry.addData("to_double", e);
+            telemetry.update();
+            sleep(20000);
         }
 
         return result;
@@ -229,22 +205,21 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
         long result = 0;
 
         try {
-            result = (long) (int) obj;
-        } catch(Exception e0) {
-            try {
-                result = (long) obj;
-            } catch(Exception e1) {
-                try {
-                    result = (long) (float) obj;
-                } catch(Exception e2) {
-                    try {
-                        result = (long) (double) obj;
-                    } catch(Exception e3) {
-                        telemetry.addData("to_long", e3);
-                        telemetry.update();
-                    }
-                }
+            if (obj.getClass() == Class.forName("java.lang.Integer")) {
+                result = (long) (int) obj;
+            } else if (obj.getClass() == Class.forName("java.lang.Double")) {
+                result = (long) (double) obj;
+            } else if (obj.getClass() == Class.forName("java.lang.Long")) {
+                result = (long) (long) obj;
+            } else if (obj.getClass() == Class.forName("java.lang.Float")) {
+                result = (long) (float) obj;
             }
+        } catch (Exception e) {
+            String class_name = obj.getClass().getName();
+            telemetry.addData("to_long", class_name);
+            telemetry.addData("to_long", e);
+            telemetry.update();
+            sleep(20000);
         }
 
         return result;

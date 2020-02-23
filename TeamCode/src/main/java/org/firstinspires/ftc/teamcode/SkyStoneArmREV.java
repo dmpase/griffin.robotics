@@ -43,6 +43,7 @@ public class SkyStoneArmREV extends SkyStoneArms {
     }
 
 
+    // open, store, or close the hook
     private static double HOOK_OPEN   = 0.0;
     private static double HOOK_CLOSED = 0.65;
     private static double HOOK_STORED = HOOK_OPEN;
@@ -59,6 +60,7 @@ public class SkyStoneArmREV extends SkyStoneArms {
         }
     }
 
+    // open or close the claw
     @Override
     public void grab(double power) {
         if (grab != null) {

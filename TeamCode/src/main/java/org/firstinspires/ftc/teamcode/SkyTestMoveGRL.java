@@ -3,36 +3,32 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 
-@Autonomous(name="Blue Building Zone GRL", group ="Griffin Robot Language"  )
+@Autonomous(name="Test Move GRL", group ="Griffin Robot Tests"  )
 // @Disabled
-public class SkyAutoBlueBuildGRL extends GriffinLinearRobot {
+public class SkyTestMoveGRL extends GriffinLinearRobot {
 
     public static final double power = 0.33;
 
-    // instructions for the OwO robot
     Object[][] owo_instructions = {
-            {SLEEP, 20000,            "sleeping 20 seconds"},
-            {MOVE,     90, power, 32, "moving 32\" to starboard"},
+            {MOVE,    0, power, 120, "moving 120\" forward"},
     };
 
-    // instructions for the UwU robot
     Object[][] uwu_instructions = {
-            {SLEEP, 20000,            "sleeping 20 seconds"},
-            {MOVE,     90, power, 32, "moving 32\" to starboard"},
+            {MOVE,    0, power, 120, "moving 120\" forward"},
     };
 
-    // this is the main Blue Build Zone autonomous op mode
-    // it replaces SkyAutoBlueBuild
+    // this test moves the robot forward 10 feet and stops
+    // it is used to calibrate the number of encoder turns per inch in the SkyStoneHolonomic constructor
     @Override
     public void runOpMode()
     {
         telemetry.addData("runOpMode", "starting initialization"); telemetry.update();
         initialize_robot(false, false);
-        telemetry.addData("runOpMode", "initialization complete"); telemetry.update();
+        telemetry.addData("runOpMode", "initialization complete " + robot); telemetry.update();
 
         Object[][] instructions = null;
 
-        // figure which robot is running and choose the appropriate instructions
+        // figure out which robot we're using
         if (exists("OwO")) {
             instructions = owo_instructions;
         } else if (exists("UwU")) {
@@ -41,13 +37,14 @@ public class SkyAutoBlueBuildGRL extends GriffinLinearRobot {
             instructions = owo_instructions;
         }
 
-        // wait for the player to press play
         waitForStart();
 
-        // run the op mode for the robot in use
+        // run the instructions
         if (instructions != null) {
             execute_loop(instructions);
         }
+
+        telemetry.addData("runOpMode: ", "shutting down"); telemetry.update();
 
         shutdown();
     }

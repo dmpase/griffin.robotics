@@ -15,6 +15,7 @@ public class SkyStoneDriverREV extends SkyStoneDriver
     public void init() {
         telemetry.addData("Status", "Starting Initialization.");
 
+        // figure out which robot we're driving and initialize accordingly
         if (DeviceFinder.exists(this, "OwO")) {
             lift_high_power_limit = 0.30;
             motors = new SkyStoneHolonomic(this, 100.84, 4975.0/360.0, 1);
@@ -27,6 +28,7 @@ public class SkyStoneDriverREV extends SkyStoneDriver
         }
         motors.init();
 
+        // initialize the arms
         arms = new SkyStoneArmREV(this);
         arms.init(false);
 

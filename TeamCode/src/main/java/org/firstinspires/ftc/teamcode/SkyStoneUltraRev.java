@@ -23,12 +23,12 @@ public class SkyStoneUltraRev extends SkyStoneSensors {
     private final double back_base;
 
     // sensor names in robot configuration file
-    private static final String PORT_LEFT  = "port s left";
-    private static final String PORT_RIGHT = "port s right";
-    private static final String STBD_LEFT  = "stbd s left";
-    private static final String STBD_RIGHT = "stbd s right";
-    private static final String BACK_LEFT  = "back s left";
-    private static final String BACK_RIGHT = "back s right";
+    private static final String STBD_RIGHT = "stbd right";
+    private static final String STBD_LEFT  = "stbd left";
+    private static final String STBD_BACK  = "stbd back";
+    private static final String PORT_BACK  = "port back";
+    private static final String PORT_RIGHT = "port right";
+    private static final String PORT_LEFT  = "port left";
 
     public SkyStoneUltraRev(OpMode op)
     {
@@ -77,8 +77,8 @@ public class SkyStoneUltraRev extends SkyStoneSensors {
         try {
             op_mode.telemetry.addData("sensors.init", "back sensors");
             op_mode.telemetry.update();
-            back_left  = op_mode.hardwareMap.get(DistanceSensor.class, BACK_LEFT);
-            back_right = op_mode.hardwareMap.get(DistanceSensor.class, BACK_RIGHT);
+            back_left  = op_mode.hardwareMap.get(DistanceSensor.class, STBD_BACK);
+            back_right = op_mode.hardwareMap.get(DistanceSensor.class, PORT_BACK);
         } catch (Exception e) {
             back_left = back_right = null;
             op_mode.telemetry.addData("sensors.init", e.getMessage());
