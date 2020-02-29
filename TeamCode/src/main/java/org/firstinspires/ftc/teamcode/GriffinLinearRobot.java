@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 
+import java.io.File;
+
 
 public abstract class GriffinLinearRobot extends LinearOpMode {
 
@@ -36,10 +38,10 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
         telemetry.update();
         if (exists("OwO")) {
             robot = "OwO";
-            motors = new SkyStoneHolonomic(this, 100.84, 4975.0/360.0, 1);
+            motors = new SkyStoneHolonomic(this, 97.6, 4975.0/360.0, -1);
         } else if (exists("UwU")) {
             robot = "UwU";
-            motors = new SkyStoneHolonomic(this, 131.3, 6200.0/360.0, 0);
+            motors = new SkyStoneHolonomic(this, 131.3, 3000/360.0, 0);
         } else {
             motors = new SkyStoneHolonomic(this, 100.84, 4975.0/360.0, 1);
         }
@@ -68,13 +70,16 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
     public static final int CLOSE      = 1;    // claw & hook, close or grab
     public static final int TIME       = 1;    // sleep time in ms
     public static final int BEARING    = 1;    // bearing in degrees
+    public static final int PATH       = 1;    // file path
     public static final int POWER      = 2;    // power, -1 to +1
+    public static final int FILE       = 2;    // file name
     public static final int RANGE      = 3;    // range in inches
     public static final int GRAB_MSG   = 2;    // message to player
     public static final int HOOK_MSG   = 2;    // message to player
     public static final int MOVE_MSG   = 4;    // message to player
     public static final int TURN_MSG   = 3;    // message to player
     public static final int SLEEP_MSG  = 2;    // message to player
+    public static final int AUDIO_MSG  = 3;    // message to player
 
     // op codes
     public static final int GRAB    = 1;
@@ -82,6 +87,7 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
     public static final int MOVE    = 3;
     public static final int TURN    = 4;
     public static final int SLEEP   = 5;
+    public static final int AUDIO   = 6;
 
 
     public void execute_loop(Object[][] instructions)
@@ -90,7 +96,7 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
             // something is coded incorrectly
             telemetry.addData("execute loop", "Emergency exit! (1)");
             telemetry.update();
-            sleep(20000);
+            sleep(30000);
             shutdown();
             return;
         }
@@ -103,7 +109,7 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
                     // player hit the stop button
                     telemetry.addData("execute loop", "Emergency exit! (2)");
                     telemetry.update();
-                    sleep(5000);
+                    sleep(30000);
                     shutdown();
                     return;
                 }
@@ -163,6 +169,23 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
                         telemetry.update();
                     }
                     sleep(sleep_time);
+                } else if (op_code == AUDIO) {
+                    // play a sound
+                    String path = to_string(instruction[PATH]);
+                    String file = to_string(instruction[FILE]);
+                    if (AUDIO_MSG < instruction.length) {
+                        String message = (String) instruction[AUDIO_MSG];
+                        telemetry.addData("execute loop", message);
+                        telemetry.update();
+                    }
+                    if (new File(path, file).exists()) {
+                        AudioFile af = new AudioFile(path, file);
+                        af.async_play();
+                    } else {
+                        telemetry.addData("execute loop", "DNE: '"+path+"/"+file+"'");
+                        telemetry.update();
+                        sleep(30000);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -170,7 +193,7 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
             telemetry.addData("execute loop", "Emergency exit! (3)");
             telemetry.addData("execute loop", e);
             telemetry.update();
-            sleep(20000);
+            sleep(30000);
             shutdown();
         }
     }
@@ -218,6 +241,25 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
             String class_name = obj.getClass().getName();
             telemetry.addData("to_long", class_name);
             telemetry.addData("to_long", e);
+            telemetry.update();
+            sleep(20000);
+        }
+
+        return result;
+    }
+
+    public String to_string(Object obj)
+    {
+        String result = null;
+
+        try {
+            if (obj.getClass() == Class.forName("java.lang.String")) {
+                result =(String) obj;
+            }
+        } catch (Exception e) {
+            String class_name = obj.getClass().getName();
+            telemetry.addData("to_string", class_name);
+            telemetry.addData("to_string", e);
             telemetry.update();
             sleep(20000);
         }

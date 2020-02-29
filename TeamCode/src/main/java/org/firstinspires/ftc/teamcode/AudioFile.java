@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import android.media.MediaPlayer;
 
+import java.io.File;
+
 public class AudioFile {
     // https://developer.android.com/reference/android/media/MediaPlayer.html
     MediaPlayer mp = new MediaPlayer();
@@ -11,6 +13,16 @@ public class AudioFile {
     public AudioFile(String name)
     {
         file = name;
+        try {
+            mp.setDataSource(file);
+        } catch (Exception e) {
+            ;
+        }
+    }
+
+    public AudioFile(String path, String name)
+    {
+        file = path + File.separatorChar + name;
         try {
             mp.setDataSource(file);
         } catch (Exception e) {
