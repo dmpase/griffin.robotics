@@ -19,8 +19,7 @@ public class SkyTestAudioGRL extends GriffinLinearRobot {
             {AUDIO, audio_path, "menial.mp3", "I know perfectly well I'm only a menial robot!"},
     };
 
-    // this test spins the robot 360 degrees
-    // it is used for calibrating the wheel encoder count for turns in the SkyStoneHolonomic constructor
+    // this test plays a simple audio file
     @Override
     public void runOpMode()
     {
