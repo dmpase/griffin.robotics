@@ -27,15 +27,16 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
     private static final double foundation_space    = 4;        // distance from foundation to building zone wall
     private static final double foundation_alliance = 47.25;    // distance from foundation to alliance wall
 
+    private static final String audio_path = "/storage/emulated/legacy/Music/audio";
 
     // instructions for the OwO robot
     Object[][] owo_instructions = {
             {GRAB, false,                        "open claw"},
-            {HOOK, false,                        "open hook"},
             {MOVE,     0,   power,           34, "move to stones"},
             {GRAB,  true,                        "grab a stone"},
             {SLEEP, sleep_delay,                 "sleep for claw"},
             {MOVE,   180,    power,          14, "back away from stones"},
+            {TURN,    10,    owo_turn_power,     "rotate to straight"},
             {MOVE,   -90,    power,          60, "move to bridge"},
             {MOVE,     0,    power,          10, "move forward"},
             {GRAB, false,                        "drop stone"},
@@ -49,8 +50,9 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
             {HOOK, false,                        "open hook"},
             {MOVE,     0,    power,          30, "push the foundation"},
             {MOVE,   180,    power,           6, "back away from foundation"},
-            {TURN,   -10,    power,              "correct retreat angle"},
+//            {TURN,   -10,    power,              "correct retreat angle"},
             {MOVE,   -90,    power,          50, "move to bridge"},
+            {AUDIO,     audio_path, "stand.mp3", "I don't think I can stand that robot much longer!"},
     };
 
     // instructions for the UwU robot
@@ -77,6 +79,7 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
             {MOVE,   180,    power,           8, "back away from foundation"},
             {TURN,     0,    power,              "correct retreat angle"},
             {MOVE,   -90,    power,          54, "move to bridge"},
+            {AUDIO,     audio_path, "stand.mp3", "I don't think I can stand that robot much longer!"},
     };
 
     // this is the main Blue Load Zone autonomous op mode
@@ -86,6 +89,10 @@ public class SkyAutoBlueLoadGRL extends GriffinLinearRobot {
     {
         telemetry.addData("runOpMode", "start initialization"); telemetry.update();
         initialize_robot(false, false);
+        {
+            AudioFile af = new AudioFile(audio_path, "aliens.mp3");
+            af.async_play();
+        }
         telemetry.addData("runOpMode", "initialization complete"); telemetry.update();
 
         Object[][] instructions = null;

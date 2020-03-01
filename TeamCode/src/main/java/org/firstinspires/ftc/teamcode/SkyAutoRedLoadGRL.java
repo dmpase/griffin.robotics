@@ -27,6 +27,7 @@ public class SkyAutoRedLoadGRL extends GriffinLinearRobot {
     private static final double foundation_space    = 4;        // distance from foundation to building zone wall
     private static final double foundation_alliance = 47.25;    // distance from foundation to alliance wall
 
+    private static final String audio_path = "/storage/emulated/legacy/Music/audio";
 
     // instructions for the OwO robot
     Object[][] owo_instructions = {
@@ -38,6 +39,7 @@ public class SkyAutoRedLoadGRL extends GriffinLinearRobot {
             {MOVE,   180,    power,          14, "back away from stones"},
  //           {TURN,     0,    power,              "fix the drift."},
             {MOVE,    90,    power,          42, "move to bridge"},
+            {MOVE,     0,    power,          10, "move forwards"},
             {GRAB, false,                        "drop stone"},
             {MOVE,    85,    power,          42, "center the hook on the foundation"},
             {MOVE,    180,   power,          36, "go back to align with wall"},
@@ -50,7 +52,8 @@ public class SkyAutoRedLoadGRL extends GriffinLinearRobot {
             {MOVE,     0,    power,          30, "push the foundation"},
             {MOVE,   180,    power,           6, "back away from foundation"},
             {TURN,    10,    power,              "correct retreat angle"},
-            {MOVE,    90,    power,          54, "move to bridge"},
+            {MOVE,    90,    power,          48, "move to bridge"},
+            {AUDIO,      audio_path, "pain.mp3", "I have this terrible pain in all the diodes down my left side!"},
     };
 
     // instructions for the UwU robot
@@ -77,6 +80,7 @@ public class SkyAutoRedLoadGRL extends GriffinLinearRobot {
             {MOVE,   180,    power,           8, "back away from foundation"},
             {TURN,     0,    power,              "correct retreat angle"},
             {MOVE,    90,    power,          54, "move to bridge"},
+            {AUDIO,      audio_path, "pain.mp3", "I have this terrible pain in all the diodes down my left side!"},
     };
 
     @Override
@@ -84,6 +88,10 @@ public class SkyAutoRedLoadGRL extends GriffinLinearRobot {
     {
         telemetry.addData("runOpMode", "start initialization"); telemetry.update();
         initialize_robot(false, false);
+        {
+            AudioFile af = new AudioFile(audio_path, "menial.mp3");
+            af.async_play();
+        }
         telemetry.addData("runOpMode", "initialization complete"); telemetry.update();
 
         Object[][] instructions = null;

@@ -182,9 +182,8 @@ public abstract class GriffinLinearRobot extends LinearOpMode {
                         AudioFile af = new AudioFile(path, file);
                         af.async_play();
                     } else {
-                        telemetry.addData("execute loop", "DNE: '"+path+"/"+file+"'");
+                        telemetry.addData("execute loop", "DNE: '"+(new File(path,file)).getCanonicalPath()+"'");
                         telemetry.update();
-                        sleep(30000);
                     }
                 }
             }
