@@ -41,7 +41,7 @@ public class SkyAutoRedLoadGRL extends GriffinLinearRobot {
             {MOVE,    90,    power,          45, "move to bridge"},
             {MOVE,     0,    power,          10, "move forwards"},
             {GRAB, false,                        "drop stone"},
-            {MOVE,   180,    power,          10, "move forwards"},
+            {MOVE,   180,    power,          10, "move backwards"},
             {MOVE,    90,    power,          42, "center the hook on the foundation"},
             {MOVE,    180,   power,          24, "go back to align with wall"},
             {MOVE,     0,    0.35,           36, "move to the foundation"},
