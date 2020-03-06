@@ -14,7 +14,7 @@ public class SkyAutoBlueBuildGRL extends GriffinLinearRobot {
     // instructions for the OwO robot
     Object[][] owo_instructions = {
             {SLEEP, 20000,            "sleeping 20 seconds"},
-            {MOVE,     90, power, 32, "moving 32\" to starboard"},
+            {MOVE,     90, power, 15, "moving 15\" to starboard"},
             {AUDIO, audio_path, "planet.mp3", "Here I am, brain the size of a planet..."},
     };
 
